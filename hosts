@@ -1,0 +1,17 @@
+[all]
+192.168.64.14   ansible_ssh_private_key_file=~/.ssh/id_rsa
+192.168.64.15   ansible_ssh_private_key_file=~/.ssh/id_rsa
+192.168.64.16   ansible_ssh_private_key_file=~/.ssh/id_rsa
+
+[weball]
+192.168.64.14   ansible_ssh_private_key_file=~/.ssh/id_rsa
+192.168.64.15   ansible_ssh_private_key_file=~/.ssh/id_rsa
+
+[web1]
+192.168.64.14   ansible_ssh_private_key_file=~/.ssh/id_rsa
+
+[we2]
+192.168.64.15   ansible_ssh_private_key_file=~/.ssh/id_rsa
+
+[db]
+192.168.64.16   ansible_ssh_private_key_file=~/.ssh/id_rsa

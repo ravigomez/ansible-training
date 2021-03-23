@@ -1,0 +1,24 @@
+#################################################
+# Ubuntu Default Tools
+#################################################
+---
+- hosts: all
+  remote_user: ansible
+  become: true
+
+  tasks:
+    - name: Update all apt packages
+      apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+    - name: Upgrade all apt packages
+      apt: upgrade=dist force_apt_get=yes
+
+    - name: Install required system packages
+      apt: name={{ item }} state=latest
+      loop:
+        [
+          'vim',
+          'git',
+          'htop',
+          'glances'
+        ]

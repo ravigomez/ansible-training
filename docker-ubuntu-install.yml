@@ -1,0 +1,59 @@
+#################################################
+# DO Community Playbooks: Docker
+#################################################
+---
+- hosts: all
+  remote_user: ansible
+  become: true
+
+  tasks:
+    - name: Update all apt packages
+      apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+
+    - name: Upgrade all apt packages
+      apt: upgrade=dist force_apt_get=yes
+
+    - name: Install required system packages
+      apt: name={{ item }} state=latest
+      loop:
+        [
+          'apt-transport-https',
+          'ca-certificates',
+          'curl',
+          'software-properties-common',
+          'gnupg-agent',
+        ]
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Update apt and install docker
+      apt: name={{ item }} state=latest
+      loop: ['docker-ce', 'docker-ce-cli', 'containerd.io']
+
+    #Docker Login on docker hub
+      #docker login
+
+    #docker swarm init
+    
+    #TODO: docker compose was download as root. need to change local user permission: ansible
+    - name: Install docker-compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.27.4/docker-compose-Linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: 'u+x,g+x'
+        
+    #TODO: add ansible in group docker ---  sudo usermod -aG docker ansible
+    
+    #TODO add ansible to login without password
+    
+    #Docker login 
+    
+    #TODO: create a swarm cluster
