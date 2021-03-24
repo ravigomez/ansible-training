@@ -1,27 +1,34 @@
 #! /bin/bash
 
+# STEP-1: update the system
 sudo  apt update
 sudo apt dist-upgrade -y
 
+#activate auto update security packages
 sudo apt install unattended-upgrades
-sudo dpkg-reconfigure --priority=low unattended-upgrades  # click YES
+sudo dpkg-reconfigure --priority=low unattended-upgrades  # Select YES
 
+#create asnible user
 sudo adduser ansible
 sudo usermod -aG sudo ansible
 
-## check if PasswordAuthentication yes 
+## check if PasswordAuthentication yes to allow first ssh connection 
 sudo vim /etc/ssh/sshd_config
-# restart the service if changed
+# if changed, restart the service
 sudo systemctl restart sshd
 
-## login as new user ravigomez
-
-mkdir ~/.ssh && chmod 700 ~/.ssh
-
 ### if you have priv/pub key configured, skip this.
-
-# on your local machinei
 
 # for linux/unix
 ssh-keygen -b 4096
 
+# from your local machine ssh target machine:
+ssh ansible@{server ip}
+
+## create .ssh folder
+mkdir ~/.ssh && chmod 700 ~/.ssh
+
+##from your local machine, copy the .pub file over ssh to the targets 
+scp ~/.ssh/id_rsa.pub ansible@{server ip}:~/.ssh/authorized_keys
+
+#TODO: Update the ~/hosts file with the path of your private key file
