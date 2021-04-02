@@ -14,7 +14,7 @@ ansible_ssh_user=ansible
 [web1]
 192.168.64.14
 
-[we2]
+[web2]
 192.168.64.15
 
 [db]
