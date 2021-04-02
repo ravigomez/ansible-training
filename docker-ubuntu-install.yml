@@ -1,9 +1,8 @@
 #################################################
-# DO Community Playbooks: Docker
+# Docker Community Install
 #################################################
 ---
-- hosts: all
-  remote_user: ansible
+- hosts: weball
   become: true
 
   tasks:
@@ -38,22 +37,30 @@
       apt: name={{ item }} state=latest
       loop: ['docker-ce', 'docker-ce-cli', 'containerd.io']
 
-    #Docker Login on docker hub
-      #docker login
-
-    #docker swarm init
-    
+    #TODO:Docker Login on docker hub 
     #TODO: docker compose was download as root. need to change local user permission: ansible
     - name: Install docker-compose
       get_url:
         url: https://github.com/docker/compose/releases/download/1.27.4/docker-compose-Linux-x86_64
         dest: /usr/local/bin/docker-compose
         mode: 'u+x,g+x'
-        
-    #TODO: add ansible in group docker ---  sudo usermod -aG docker ansible
     
-    #TODO add ansible to login without password
-    
-    #Docker login 
-    
-    #TODO: create a swarm cluster
+    - name: Add ansible user on Docker group
+      shell: usermod -aG docker ansible
+
+## Docker Swarm init and add worker
+- hosts: web1
+  become: true
+
+  tasks:
+    - name: Swarm manager init
+      include_role:
+        name: docker-swarm-init
+
+- hosts: web2
+  become: true
+
+  tasks:
+    - name: Swarm Worker init
+      include_role:
+        name: docker-swarm-worker-init 
