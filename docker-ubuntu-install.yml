@@ -6,11 +6,9 @@
   become: true
 
   tasks:
-    - name: Update all apt packages
-      apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
-
-    - name: Upgrade all apt packages
-      apt: upgrade=dist force_apt_get=yes
+    - name: System update and upgrade
+      include_role:
+        name: system-update-upgrade
 
     - name: Install required system packages
       apt: name={{ item }} state=latest
@@ -55,7 +53,7 @@
   tasks:
     - name: Swarm manager init
       include_role:
-        name: docker-swarm-init
+        name: docker-swarm-manager-init
 
 - hosts: web2
   become: true
