@@ -1,0 +1,15 @@
+#################################################
+# Ansible Install
+#################################################
+---
+- hosts: ansible
+  become: true
+
+  tasks:
+    - name: System update
+      include_role:
+        name: system-update
+
+    - name: Install ansible
+      include_role:
+        name: ansible-install

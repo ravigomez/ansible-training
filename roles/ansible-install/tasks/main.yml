@@ -1,0 +1,12 @@
+- name: install commonss
+  apt:
+    name: software-properties-common
+
+- neme: include ansible repository
+  apt_repository:
+    repo: ppa:ansible/ansible
+    status: present
+
+- name: install ansible packeges
+  apt:
+    name: ansible
