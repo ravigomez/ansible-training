@@ -1,0 +1,15 @@
+#################################################
+# Ubuntu Default Tools
+#################################################
+---
+- hosts: all
+  remote_user: ansible
+
+  tasks:
+    - name: Check date and time
+      command: date
+
+    - name: Run some scripts
+      shell: |
+        echo "olll"
+        echo "olaaa"

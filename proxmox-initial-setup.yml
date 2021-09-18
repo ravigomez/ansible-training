@@ -1,0 +1,30 @@
+#################################################
+# PROXMOX HOME INITIAL SETUP
+#################################################
+---
+- hosts: proxmox
+  become: true
+
+  tasks:
+    - name: System update and upgrade
+      include_role:
+        name: system-update-upgrade
+   
+    - name: Include proxmox source on source.list
+      shell: |
+
+    - name: Comment production source
+      shell: |
+
+
+    - name: Install required system packages
+      apt: name={{ item }} state=latest
+      loop:
+        [
+          'apt-transport-https',
+          'ca-certificates',
+          'curl',
+          'software-properties-common',
+          'gnupg-agent',
+        ]
+

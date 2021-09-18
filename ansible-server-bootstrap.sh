@@ -3,7 +3,8 @@
 apt update
 
 # install ansible
-apt install software-properties-common
+if [ ! dpkg -s software-properties-common ]; then apt install software-properties-common
+
 apt-add-repository --yes --update ppa:ansible/ansible
 apt install ansible
 

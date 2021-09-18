@@ -1,0 +1,64 @@
+#################################################
+# Docker Community Install
+#################################################
+---
+- hosts: weball
+  become: true
+
+  tasks:
+    - name: System update and upgrade
+      include_role:
+        name: system-update-upgrade
+
+    - name: Install required system packages
+      apt: name={{ item }} state=latest
+      loop:
+        [
+          'apt-transport-https',
+          'ca-certificates',
+          'curl',
+          'software-properties-common',
+          'gnupg-agent',
+        ]
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu focal stable
+        state: present
+
+    - name: Update apt and install docker
+      apt: name={{ item }} state=latest
+      loop: ['docker-ce', 'docker-ce-cli', 'containerd.io']
+
+    #TODO:Docker Login on docker hub 
+    #TODO: docker compose was download as root. need to change local user permission: ansible
+    - name: Install docker-compose
+      get_url:
+        url: https://github.com/docker/compose/releases/download/1.27.4/docker-compose-Linux-x86_64
+        dest: /usr/local/bin/docker-compose
+        mode: 'u+x,g+x'
+    
+    - name: Add ansible user on Docker group
+      shell: usermod -aG docker ansible
+
+## Docker Swarm init and add worker
+- hosts: web1
+  become: true
+
+  tasks:
+    - name: Swarm manager init
+      include_role:
+        name: docker-swarm-manager-init
+
+- hosts: web2
+  become: true
+
+  tasks:
+    - name: Swarm Worker init
+      include_role:
+        name: docker-swarm-worker-init 

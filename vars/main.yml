@@ -1,0 +1,15 @@
+---
+
+docker_architecture:
+  x86_64: "amd64"
+
+# Docker CE stable release repository
+docker_repo_ce_stable:
+  name: "docker_ce_stable"
+  apt_repo: "deb [arch={{ docker_architecture[ansible_architecture] }}] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+  apt_gpg_key: "https://download.docker.com/linux/{{ ansible_distribution | lower }}/gpg"
+  apt_gpg_key_id: "9DC858229FC7DD38854AE2D88D81803C0EBFCD88"
+
+#TODO Docker CE edge release repository
+#TODO Docker CE test release repository
+#TODO Docker CE nightly release repository
